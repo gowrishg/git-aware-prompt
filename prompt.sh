@@ -20,7 +20,16 @@ find_git_dirty() {
   fi
 }
 
-PROMPT_COMMAND="find_git_branch; find_git_dirty; $PROMPT_COMMAND"
+find_git_sha1() {
+  local status=$(git rev-parse --short HEAD 2> /dev/null)
+  if [[ "$status" != "" ]]; then
+    git_sha1="($status)"
+  else
+    git_sha1=''
+  fi
+}
+
+PROMPT_COMMAND="find_git_branch; find_git_dirty; find_git_sha1; $PROMPT_COMMAND"
 
 # Default Git enabled prompt with dirty state
 # export PS1="\u@\h \w \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\$ "
